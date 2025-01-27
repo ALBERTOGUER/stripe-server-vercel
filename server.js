@@ -17,33 +17,24 @@ app.get("/", (req, res) => {
   res.sendFile(path);
 });
 
-app.get("/config", (req, res) => {
+app.get("/products", (req, res) => {
+  res.json({
+    succes: true,
+    data: [
+      {
+        id: 1,
+
+      }
+    ]
+
+  }
+  )
   res.send({
     publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
   });
 
 });
 
-app.post("/create-payment-intent", async (req, res) => {
-  try {
-    const paymentIntent = await stripe.paymentIntents.create({
-      currency: "MXN",
-      amount: 1999,
-      automatic_payment_methods: { enabled: true },
-    });
-
-    // Send publishable key and PaymentIntent details to client
-    res.send({
-      clientSecret: paymentIntent.client_secret,
-    });
-  } catch (e) {
-    return res.status(400).send({
-      error: {
-        message: e.message,
-      },
-    });
-  }
-});
 
 app.listen(process.env.PORT || 3000, () =>
   console.log(`Node server listening at http://localhost:5252`)
